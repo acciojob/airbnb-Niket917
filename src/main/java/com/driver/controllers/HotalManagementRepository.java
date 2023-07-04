@@ -1,5 +1,4 @@
-package repository;
-
+package com.driver.controllers;
 import com.driver.model.Booking;
 import com.driver.model.Facility;
 import com.driver.model.Hotel;
@@ -15,7 +14,9 @@ public class HotalManagementRepository {
     Map<String,Booking> bookingDb = new HashMap<>();
     Map<String,Integer> userRent = new HashMap<>();
     public String addHotel(Hotel hotel) {
-        if(hotalDb.containsKey(hotel.getHotelName())){
+        if(hotel.getHotelName() == null){
+            return "FAILURE";
+        }else if(hotalDb.containsKey(hotel.getHotelName())){
             return "FAILURE";
         } else {
             hotalDb.put(hotel.getHotelName(),hotel);
@@ -24,8 +25,9 @@ public class HotalManagementRepository {
     }
 
     public Integer addUder(User user) {
-        userDb.put(user.getaadharCardNo(),user);
-        return user.getaadharCardNo();
+        int adharNum = user.getaadharCardNo();
+        userDb.put(adharNum,user);
+        return adharNum;
     }
 
     public String getHotelWithMostFacilities() {
@@ -42,29 +44,30 @@ public class HotalManagementRepository {
                 hotelName.add(key);
             }
         }
-            Collections.sort(hotelName);
-            return hotelName.get(0);
+        Collections.sort(hotelName);
+        return hotelName.get(0);
 
     }
 
     public int bookARoom(Booking booking) {
-             String hotelName = booking.getHotelName();
-             if(!hotalDb.containsKey(hotelName)) {
-                 return -1;
-             } else {
-                 if(hotalDb.get(hotelName).getAvailableRooms() >= booking.getNoOfRooms()){
-                     Hotel hotel = hotalDb.get(hotelName);
-                     int totalRoomAvialable = hotel.getAvailableRooms();
-                     totalRoomAvialable -= booking.getNoOfRooms();
-                     hotel.setAvailableRooms(totalRoomAvialable);
-                     hotalDb.put(hotelName,hotel);
-                     String bookingId = UUID.randomUUID()+"";
-                     int amoutToBePaid = hotel.getPricePerNight() * booking.getNoOfRooms();
-                     userRent.put(bookingId,amoutToBePaid);
-                     return amoutToBePaid;
-                 }
-             }
+        String hotelName = booking.getHotelName();
+        if(!hotalDb.containsKey(hotelName)) {
             return -1;
+        }
+        if(hotalDb.get(hotelName).getAvailableRooms() >= booking.getNoOfRooms()){
+                Hotel hotel = hotalDb.get(hotelName);
+                int totalRoomAvialable = hotel.getAvailableRooms();
+                totalRoomAvialable -= booking.getNoOfRooms();
+                hotel.setAvailableRooms(totalRoomAvialable);
+                hotalDb.put(hotelName,hotel);
+                String bookingId = UUID.randomUUID()+"";
+                System.out.println(bookingId +" bookingId");
+                int amoutToBePaid = hotel.getPricePerNight() * booking.getNoOfRooms();
+                userRent.put(bookingId,amoutToBePaid);
+                System.out.println(amoutToBePaid + " Amout to be Paid");
+                return amoutToBePaid;
+            }
+           return -1;
     }
 
     public int getBooking(Integer aadharCard) {
@@ -91,3 +94,4 @@ public class HotalManagementRepository {
         return  hotel;
     }
 }
+

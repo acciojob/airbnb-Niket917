@@ -1,4 +1,4 @@
-package service;
+package com.driver.controllers;
 
 import com.driver.model.Booking;
 import com.driver.model.Facility;
@@ -6,7 +6,7 @@ import com.driver.model.Hotel;
 import com.driver.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import repository.HotalManagementRepository;
+
 
 import java.util.List;
 
@@ -17,11 +17,9 @@ public class HotalManagementService {
     HotalManagementRepository hotalManagementRepository ;
 
     public String addHotal(Hotel hotel){
-        if(hotel.getHotelName() == null){
-            return "FAILURE";
-        } else {
+
             return hotalManagementRepository.addHotel(hotel);
-        }
+
     }
 
 
@@ -38,7 +36,7 @@ public class HotalManagementService {
     }
 
     public int getBooking(Integer aadharCard) {
-       return hotalManagementRepository.getBooking(aadharCard);
+        return hotalManagementRepository.getBooking(aadharCard);
     }
 
 
@@ -46,3 +44,4 @@ public class HotalManagementService {
         return hotalManagementRepository.updateFacilities(newFacilities,hotelName);
     }
 }
+
