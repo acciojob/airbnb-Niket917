@@ -13,8 +13,8 @@ import java.util.List;
 @Service
 public class HotalManagementService {
 
-    @Autowired
-    HotalManagementRepository hotalManagementRepository ;
+
+    HotalManagementRepository hotalManagementRepository = new HotalManagementRepository() ;
 
     public String addHotal(Hotel hotel){
 
